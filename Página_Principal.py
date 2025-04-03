@@ -1,12 +1,7 @@
 import streamlit as st
-import plotly.express as px
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import requests
-from requests.auth import HTTPBasicAuth
 import plotly.graph_objs as go
-from streamlit_js_eval import streamlit_js_eval
 from datetime import datetime
 import google.generativeai as genai
 import textwrap
