@@ -27,10 +27,17 @@ with col[1]:
     st.image("imgs/logo_lucas.jpg", caption="Momento da apresentação do projeto de pesquisa (PIBIC)")
     
     
-text =  """ 
----
+footer = """
+<hr style="margin-top: 3rem; margin-bottom: 1rem;">
 
-Se você gostou do projeto, tem alguma crítica ou simplesmente quer trocar uma ideia, pode me encontrar pelo e-mail **lucaspook12@gmail.com** ou pelo [LinkedIn](https://www.linkedin.com/in/lucas-dos-reis-lrs).
+<div style="text-align: center; font-size: 0.9rem; color: #666;">
+    <p>Se você gostou do projeto, tem alguma sugestão ou quer trocar uma ideia, entre em contato:</p>
+    <p>
+        📧 <a href="mailto:lucaspook12@gmail.com" style="text-decoration: none; color: #2980b9;">lucaspook12@gmail.com</a> |
+        💼 <a href="https://www.linkedin.com/in/lucas-dos-reis-lrs" target="_blank" style="text-decoration: none; color: #2980b9;">LinkedIn</a>
+    </p>
+    <p style="font-size: 0.8rem; color: #aaa;">© 2025 Lucas Reis. Todos os direitos reservados.</p>
+</div>
 """
 
-st.markdown(text)
+st.markdown(footer, unsafe_allow_html=True)

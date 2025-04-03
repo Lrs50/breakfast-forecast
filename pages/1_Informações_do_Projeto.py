@@ -40,10 +40,22 @@ Durante o desenvolvimento, foram utilizadas as seguintes **linguagens de program
 - **Python**, principal linguagem para scripts, modelagem preditiva, automações e APIs.
 - **SQL**, para manipulação e consulta de dados no Data Warehouse.
 - **HTML e CSS**, aplicados na personalização visual da interface Streamlit.
-
----
-
-Se você gostou do projeto, tem sugestões ou quer trocar ideias sobre dados, entre em contato por **lucaspook12@gmail.com** ou [LinkedIn](https://www.linkedin.com/in/lucas-dos-reis-lrs).
 """
 
 st.markdown(text)
+
+
+footer = """
+<hr style="margin-top: 3rem; margin-bottom: 1rem;">
+
+<div style="text-align: center; font-size: 0.9rem; color: #666;">
+    <p>Se você gostou do projeto, tem alguma sugestão ou quer trocar uma ideia, entre em contato:</p>
+    <p>
+        📧 <a href="mailto:lucaspook12@gmail.com" style="text-decoration: none; color: #2980b9;">lucaspook12@gmail.com</a> |
+        💼 <a href="https://www.linkedin.com/in/lucas-dos-reis-lrs" target="_blank" style="text-decoration: none; color: #2980b9;">LinkedIn</a>
+    </p>
+    <p style="font-size: 0.8rem; color: #aaa;">© 2025 Lucas Reis. Todos os direitos reservados.</p>
+</div>
+"""
+
+st.markdown(footer, unsafe_allow_html=True)

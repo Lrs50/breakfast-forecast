@@ -44,7 +44,6 @@ def explain_color(color_code, desc):
     )
 
 
-@st.cache_resource
 def return_measurament_items():
     
     return {
@@ -62,7 +61,6 @@ def return_measurament_items():
     "queijo":       "200g"
 }
 
-@st.cache_resource
 def return_pretty_item(item,inverse=False):
     
     map_dict = {
@@ -211,7 +209,7 @@ def get_price_df(dataset,item):
     id = id_data[id_data["item"]==item]["id"].values[0]
 
     series_forecast = dataset["series_forecast"]
-    series_forecast = series_forecast[series_forecast["id"]==id]
+    series_forecast = series_forecast[series_forecast["id"]==id].copy()
     series_forecast["ds"] = pd.to_datetime(series_forecast["ds"])
     
     supermarket_df = dataset["supermarket_items"]
@@ -465,8 +463,13 @@ st.title("☕ Quanto Custa o Café da Manhã?")
 
 #bases = ["breakfast_id","breakfast_timeseries","seasonality_forecast","series_forecast","supermarket_items"]
 
-dataset = retrieve_data()
-st.session_state["dataset"] = dataset
+def get_dataset():
+    if "dataset" not in st.session_state:
+        st.session_state["dataset"] = retrieve_data()
+    return st.session_state["dataset"]
+
+dataset = get_dataset()
+
 #@st.fragment()
 def info_time_series_general():
         
@@ -566,7 +569,7 @@ def info_time_series_solo():
         
         season_forecast = dataset["seasonality_forecast"]
         season_forecast = season_forecast.reset_index()
-        season_forecast = season_forecast[season_forecast["id"]==id]
+        season_forecast = season_forecast[season_forecast["id"]==id].copy()
         season_forecast["ds"] = pd.to_datetime(season_forecast["ds"])
         season_forecast["season"] = season_forecast["season"].round(2)
         
@@ -736,10 +739,17 @@ with solo:
 general_info_all()
 
 
-text = """
----
+footer = """
+<hr style="margin-top: 3rem; margin-bottom: 1rem;">
 
-Se você gostou do projeto, tem alguma crítica ou simplesmente quer trocar uma ideia, pode me encontrar pelo e-mail **lucaspook12@gmail.com** ou pelo [LinkedIn](https://www.linkedin.com/in/lucas-dos-reis-lrs).
+<div style="text-align: center; font-size: 0.9rem; color: #666;">
+    <p>Se você gostou do projeto, tem alguma sugestão ou quer trocar uma ideia, entre em contato:</p>
+    <p>
+        📧 <a href="mailto:lucaspook12@gmail.com" style="text-decoration: none; color: #2980b9;">lucaspook12@gmail.com</a> |
+        💼 <a href="https://www.linkedin.com/in/lucas-dos-reis-lrs" target="_blank" style="text-decoration: none; color: #2980b9;">LinkedIn</a>
+    </p>
+    <p style="font-size: 0.8rem; color: #aaa;">© 2025 Lucas Reis. Todos os direitos reservados.</p>
+</div>
 """
 
-st.markdown(text)
+st.markdown(footer, unsafe_allow_html=True)
