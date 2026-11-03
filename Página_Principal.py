@@ -452,7 +452,7 @@ def create_forecast_plot_solo(serie_forecast, item, metric,title="",tendency = F
 @st.cache_resource
 def call_gemini(prompt):
     genai.configure(api_key=st.secrets["api_keys"]["genimi_api"])
-    model = genai.GenerativeModel('gemini-2.0-flash')
+    model = genai.GenerativeModel('gemini-3.8-flash')
 
     response = model.generate_content(prompt)
     return format_output_llm(response.text)
