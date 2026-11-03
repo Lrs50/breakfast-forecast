@@ -1,6 +1,8 @@
 # 🥐 Previsão de Preços dos Itens do Café da Manhã
 
-Projeto completo de engenharia e ciência de dados que coleta, processa, modela e disponibiliza informações sobre os preços de alimentos típicos do café da manhã brasileiro.
+Projeto completo de Engenharia e Ciência de Dados que automatiza a coleta, o processamento, a modelagem e a disponibilização de informações sobre os preços de alimentos típicos do café da manhã brasileiro.
+
+🔗 Acesse a aplicação online: https://breakfast-forecast.streamlit.app/
 
 ---
 
