@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 import plotly.graph_objs as go
 from datetime import datetime
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 import textwrap
 import re
 import gspread
@@ -451,10 +452,17 @@ def create_forecast_plot_solo(serie_forecast, item, metric,title="",tendency = F
     return fig
 @st.cache_resource
 def call_gemini(prompt):
-    genai.configure(api_key=st.secrets["api_keys"]["genimi_api"])
-    model = genai.GenerativeModel('gemini-3.8-flash')
-
-    response = model.generate_content(prompt)
+    client = genai.Client(
+        api_key=st.secrets["api_keys"]["genimi_api"],
+        http_options=types.HttpOptions(timeout=60000),
+    )
+    response = client.models.generate_content(
+        model="gemini-3.8-flash",
+        contents=prompt,
+        config=types.GenerateContentConfig(
+            thinking_config=types.ThinkingConfig(thinking_level="low")
+        ),
+    )
     return format_output_llm(response.text)
 
 def format_output_llm(text):
