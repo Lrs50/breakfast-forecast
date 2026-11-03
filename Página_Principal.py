@@ -17,14 +17,14 @@ st.sidebar.markdown(
     <p style='text-align: justify;'>
     Com os aumentos repentinos e expressivos nos preços do <strong>café</strong> e dos <strong>ovos</strong>, comecei a me perguntar:<br>
     <em>"E os outros itens do café da manhã, como estão?"</em><br><br>
-    A partir dessa curiosidade, selecionei alguns dos principais alimentos presentes na mesa do brasileiro e desenvolvi este projeto com o objetivo de:
+    A partir dessa curiosidade, selecionei alguns dos principais alimentos presentes na mesa do brasileiro e fiz este projeto para:
     </p>
     <ul style='text-align: left;'>
       <li>Investigar a variação dos preços desses itens;</li>
       <li>Estimar quais produtos tendem a sofrer aumento nos próximos meses;</li>
       <li>Prever <strong>quanto esses preços podem subir nos próximos 6 meses</strong>.</li>
     </ul>
-    <p style='text-align: justify;'>A proposta é fornecer uma visão clara e acessível sobre a inflação do café da manhã — combinando dados, inteligência artificial e visualizações interativas.</p>
+    <p style='text-align: justify;'>A ideia é mostrar de forma simples a inflação do café da manhã, com dados, inteligência artificial e gráficos interativos.</p>
     """,
     unsafe_allow_html=True
 )
@@ -258,10 +258,12 @@ def create_forecast_plot(series_forecasts, items, metric,title=""):
         series['ds'] = pd.to_datetime(series['ds'])
     
     # Create the plot
-    today_date = datetime.today()
-    
+    today_date = min(
+        pd.to_datetime(s.loc[s["model"] == 1, "ds"]).min() for s in series_forecasts
+    )
+
     fig = go.Figure()
-    
+
     # Color palette for multiple traces
     colors = ['#3182bd','#e41a1c','#4daf4a','#984ea3','#ff7f00','#a65628','#f781bf','#999999','#e6194B','#3cb44b','#ffe119',
               '#4363d8','#f58231','#911eb4','#42d4f4','#469990','#9A6324','#800000','#808000','#008080','#000075','#a9a9a9',
@@ -459,7 +461,7 @@ def format_output_llm(text):
   text = text.replace('•', '  *')
   return textwrap.indent(text, '> ', predicate=lambda _: True)
 # Body of the Page
-st.title("☕ Quanto Custa o Café da Manhã?")
+st.title("☕ Quanto Custará o Café da Manhã?")
 
 #bases = ["breakfast_id","breakfast_timeseries","seasonality_forecast","series_forecast","supermarket_items"]
 
@@ -720,12 +722,19 @@ def general_info_all():
         6. O titulo da receita deve ter o seguinte formato **Titulo**
         Seja detalhado e direto, garantindo que as receitas sejam fáceis de entender e seguir.
         """
-        response_text = call_gemini(prompt)
-        response_text = response_text.split("<RECETA>")
-        
-        for index,recipe in enumerate(response_text[1:]):
+        try:
+            response_text = call_gemini(prompt)
+            recipes = response_text.split("<RECETA>")[1:]
+            if not recipes:
+                raise ValueError("no recipes")
+        except Exception:
+            recipes = []
+            st.warning("Serviço não disponível")
+
+        for index,recipe in enumerate(recipes):
             match = re.search(r"\*\*(.*?)\*\*", recipe)
-            with st.expander(f"{index+1}. {match.group(1)}"):
+            title = match.group(1) if match else f"Receita {index+1}"
+            with st.expander(f"{index+1}. {title}"):
                 st.markdown(recipe)
         
       
